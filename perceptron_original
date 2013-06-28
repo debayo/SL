@@ -1,0 +1,52 @@
+  # coding=utf-8
+'''
+perceptron original method
+Created on 2013年6月28日
+
+@author: zzy
+'''
+import os
+# parameter
+w = [0,0]
+b = 0
+learningRate = 1
+
+trainingSet = [((3,3),1),((4,3),1),((1,1),-1)]
+
+def updateParameter(sample):
+  global w,b,learningRate
+  w[0] = w[0] + learningRate * sample[1] * sample[0][0]
+  w[1] = w[1] + learningRate * sample[1] * sample[0][1]
+  b = b + learningRate * sample[1]
+  print w,b
+  
+def misClassify(sample):
+  res = 0
+  for i in range(len(sample[0])):
+    res += sample[0][i] * w[i]
+  
+  res += b
+  res *= sample[1]
+
+  if res <= 0:
+    return True
+  else:
+    return False
+
+def check ():
+  flag = False
+  for sample in trainingSet:
+    if(misClassify(sample)==True):
+      flag = True
+      updateParameter(sample)
+      
+  if(flag == False):
+    print "Reulst w:"+str(w)+" b:"+str(b)
+    os._exit(0)
+    
+  flag = False
+
+if __name__ == '__main__':
+  for i in range(1000):
+    check()
+  print 'The traning set is not linear separable'
